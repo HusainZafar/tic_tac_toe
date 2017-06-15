@@ -8,13 +8,13 @@ def display_board(board):
     """
     prints the current board
     """
-    print "TIC TAC TOE            Move Index\n"
-    print board[0] + " | " + board[1] + " | " + board[2] + "                 " + "7 8 9"
-    print "--|---|---"
-    print board[3] + " | " + board[4] + " | " + board[5] + "                 " + "4 5 6"
-    print "--|---|---"
-    print board[6] + " | " + board[7] + " | " + board[8] + "                 " + "1 2 3"
-    print ""
+    print ("TIC TAC TOE            Move Index\n")
+    print (" " + board[0] + " | " + board[1] + " | " + board[2] + "                 " + "7 8 9")
+    print ("---|---|---")
+    print (" " + board[3] + " | " + board[4] + " | " + board[5] + "                 " + "4 5 6")
+    print ("---|---|---")
+    print (" " + board[6] + " | " + board[7] + " | " + board[8] + "                 " + "1 2 3")
+    print ("")
 
 def display_tutorial_board(board, tut):
     """
@@ -32,13 +32,13 @@ def display_tutorial_board(board, tut):
 	    prob[j] = '-'
 	j += 1
 
-    print "TIC TAC TOE            Move Index            Winning chance\n"
-    print board[0] + " | " + board[1] + " | " + board[2] + "                 " + "7 8 9" + "                 " + prob[0] + " " + prob[1] + " " + prob[2]
-    print "--|---|---"
-    print board[3] + " | " + board[4] + " | " + board[5] + "                 " + "4 5 6" + "                 " + prob[3] + " " + prob[4] + " " + prob[5]
-    print "--|---|---"
-    print board[6] + " | " + board[7] + " | " + board[8] + "                 " + "1 2 3" + "                 " + prob[6] + " " + prob[7] + " " + prob[8]
-    print ""
+    print ("TIC TAC TOE            Move Index            Winning chance\n")
+    print (" " + board[0] + " | " + board[1] + " | " + board[2] + "                 " + "7 8 9" + "                 " + prob[0] + " " + prob[1] + " " + prob[2])
+    print ("---|---|---")
+    print (" " + board[3] + " | " + board[4] + " | " + board[5] + "                 " + "4 5 6" + "                 " + prob[3] + " " + prob[4] + " " + prob[5])
+    print ("---|---|---")
+    print (" " + board[6] + " | " + board[7] + " | " + board[8] + "                 " + "1 2 3" + "                 " + prob[6] + " " + prob[7] + " " + prob[8])
+    print ("")
 
 def check_win(board, player1, player2):
     """
@@ -121,7 +121,7 @@ def minimax(board, move, comp, plr):
 
 def one_player(board):
     """
-    function to play with the computer
+    Play with the computer
     """
     index_mapping = {7:0,8:1,9:2,4:3,5:4,6:5,1:6,2:7,3:8}
     order = int(raw_input("first(1) or second(2) ?\n"))
@@ -135,36 +135,36 @@ def one_player(board):
 
     global COUNT
     if order == 1:
-        print "\033c"
+        print ("\033c")
         display_board(board)
         while check_win(board, comp, plr)[0] == 0:
 	    COUNT = 0
             tut = [-i for i in minimax(board, plr, comp, plr)]
             if t == 1:
-		print "\033c"
+		print ("\033c")
 	        display_tutorial_board(board, tut)
 	    index = int(raw_input())
 	    if index > 9 or index < 1:
-	            print "\033c"
+	            print ("\033c")
 	            display_board(board)
                     if t == 1:
-		        print "\033c"
+		        print ("\033c")
 	        	display_tutorial_board(board, tut)
 		    continue
             index = index_mapping[index]
             # cant use already used index
             if board[index] != '-':
-                print "\033c"
+                print ("\033c")
                 display_board(board)
                 if t == 1:
-		    print "\033c"
+		    print ("\033c")
 	            display_tutorial_board(board, tut)
                 continue
             board[index] = plr
-            print "\033c"
+            print ("\033c")
             display_board(board)
             if t == 1:
-	        print "\033c"
+	        print ("\033c")
         	display_tutorial_board(board, tut)
             COUNT = 0
             if check_win(board, comp, plr)[0] != 0:
@@ -172,12 +172,12 @@ def one_player(board):
             ret = minimax(board, comp, comp, plr)
             # chose move for computer
             board[the_move(board, ret)] = comp
-            print "\033c"
+            print ("\033c")
             display_board(board)
         if check_win(board, comp, plr)[0] == 1:
-            print "You lost!!"
+            print ("You lost!!")
         else:
-            print "It's a draw!"
+            print ("It's a draw!")
 
     if order == 2:
         while check_win(board, comp, plr)[0] == 0:
@@ -185,7 +185,7 @@ def one_player(board):
             ret = minimax(board, comp, comp, plr)
             # chose move for computer
             board[the_move(board, ret)] = comp
-            print "\033c"
+            print ("\033c")
             display_board(board)
             if check_win(board, comp, plr)[0] != 0:
 	                break
@@ -196,36 +196,36 @@ def one_player(board):
 		tut = [-i for i in minimax(board, plr, comp, plr)]
 		display_board(board)
                 if t == 1:
-	            print "\033c"
+	            print ("\033c")
         	    display_tutorial_board(board, tut)
                 index = int(raw_input())
 	    	if index > 9 or index < 1:
-	            print "\033c"
+	            print ("\033c")
 	            display_board(board)
                     if t == 1:
-	                print "\033c"
+	                print ("\033c")
         	        display_tutorial_board(board, tut)
 		    continue
 		index = index_mapping[index]
                 if board[index] == '-':
                     flag = 1
                     board[index] = plr
-                    print "\033c"
+                    print ("\033c")
                     display_board(board)
                     if t == 1:
-	                print "\033c"
+	                print ("\033c")
         	        display_tutorial_board(board, tut)
                 else:
-                    print "\033c"
+                    print ("\033c")
                     display_board(board)
                     if t == 1:
-	                print "\033c"
+	                print ("\033c")
         	        display_tutorial_board(board, tut)
 
         if check_win(board, comp, plr)[0] == 1:
-            print "You lost!!"
+            print ("You lost!!")
         else:
-            print "It's a draw!"
+            print ("It's a draw!")
 
 if __name__ == "__main__":
     board = ['-', '-', '-',

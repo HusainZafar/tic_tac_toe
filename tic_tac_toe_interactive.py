@@ -3,12 +3,14 @@ Tic Tac Toe Minimax
 minimax value returned is from computer point of view. so to print from user point of view, prin opposite of what is received
 Add comments
 """
+import random
+from builtins import input
 
 def display_board(board):
 	"""
 	prints the current board
 	"""
-	print ("TIC TAC TOE			Move Index\n")
+	print ("TIC TAC TOE			      Move Index\n")
 	print (" " + board[0] + " | " + board[1] + " | " + board[2] + "				 " + "7 8 9")
 	print ("---|---|---")
 	print (" " + board[3] + " | " + board[4] + " | " + board[5] + "				 " + "4 5 6")
@@ -35,14 +37,20 @@ def display_tutorial_board(board, tut):
 			prob[j] = '-'
 		j += 1
 
-	print ("TIC TAC TOE			Move Index			Winning chance\n")
-	print (" " + board[0] + " | " + board[1] + " | " + board[2] + "				 " + "7 8 9" + "				 " + prob[0] + " " + prob[1] + " " + prob[2])
+	print ("TIC TAC TOE    		      Move Index		       Winning chance\n")
+	print (" " + board[0] + " | " + board[1] + " | " + board[2] + "			 " + "7 8 9" + "				 " + prob[0] + " " + prob[1] + " " + prob[2])
 	print ("---|---|---")
-	print (" " + board[3] + " | " + board[4] + " | " + board[5] + "				 " + "4 5 6" + "				 " + prob[3] + " " + prob[4] + " " + prob[5])
+	print (" " + board[3] + " | " + board[4] + " | " + board[5] + "			 " + "4 5 6" + "				 " + prob[3] + " " + prob[4] + " " + prob[5])
 	print ("---|---|---")
-	print (" " + board[6] + " | " + board[7] + " | " + board[8] + "				 " + "1 2 3" + "				 " + prob[6] + " " + prob[7] + " " + prob[8])
+	print (" " + board[6] + " | " + board[7] + " | " + board[8] + "			 " + "1 2 3" + "				 " + prob[6] + " " + prob[7] + " " + prob[8])
 	print ("")
 
+def check_empty(board):
+	for i in range(0,9):
+		if board[i] != '-':
+			return False
+	return True
+	
 def check_win(board, player1, player2):
 	"""
 	returns status of current board: 1-> won, 2-> draw, 0-> game undecided
@@ -142,7 +150,10 @@ def one_player(board):
 		display_board(board)
 		while check_win(board, comp, plr)[0] == 0:
 			COUNT = 0
-			tut = [-i for i in minimax(board, plr, comp, plr)]
+			if check_empty(board):
+				tut = [0,0,0,0,0,0,0,0,0]
+			else:
+				tut = [-i for i in minimax(board, plr, comp, plr)]
 			if t == 1:
 				print ("\033c")
 				display_tutorial_board(board, tut)
@@ -185,9 +196,12 @@ def one_player(board):
 	if order == 2:
 		while check_win(board, comp, plr)[0] == 0:
 			COUNT = 0
-			ret = minimax(board, comp, comp, plr)
-			# chose move for computer
-			board[the_move(board, ret)] = comp
+			if check_empty(board):
+				board[random.randrange(0,9)] = comp
+			else:
+				ret = minimax(board, comp, comp, plr)
+				# chose move for computer
+				board[the_move(board, ret)] = comp
 			print ("\033c")
 			display_board(board)
 			if check_win(board, comp, plr)[0] != 0:
@@ -197,6 +211,7 @@ def one_player(board):
 			while flag == 0:
 				COUNT = 0
 				tut = [-i for i in minimax(board, plr, comp, plr)]
+				print ("\033c")
 				display_board(board)
 				if t == 1:
 					print ("\033c")
@@ -230,11 +245,73 @@ def one_player(board):
 		else:
 			print ("It's a draw!")
 
+def two_player(board):
+	'''
+	Play in 2 player mode
+	'''
+	index_mapping = {7:0,8:1,9:2,4:3,5:4,6:5,1:6,2:7,3:8}
+	player1 = input("Player 1 name (Player 1): ")
+	player2 = input("Player 2 name (Player 2): ")
+	if player1 == '':
+		player1 = 'Player1'
+	if player2 == '':
+		player2 = 'Player2'
+	plr1 = input("Enter character for "+ player1 + " on board (x): ")
+
+	if plr1 == '':
+		plr1 = 'x'
+	plr2 = input("Enter character for "+ player2 + " on board (o): ")	
+	if plr2 == '':
+		plr2 = 'o'
+	
+	move_mapping = {player1:plr1, player2:plr2}
+	m = input("Who goes first, " + player1 + " or " + player2 + " (1/2)? (1): ")
+	if m == '':
+		m = 1
+	m = int(m)
+	if m == 1:
+		chance = player1
+	else:
+		chance = player2	
+	while(check_win(board, plr1, plr2)[0] == 0):
+		print ("\033c")
+		display_board(board)
+		print(chance + ": Your chance")
+		index = int(input())
+		if index > 9 or index < 1:
+			print ("\033c")
+			continue		
+		index = index_mapping[index]
+		if(board[index] != '-'):
+			continue
+		board[index] = move_mapping[chance]
+		if(chance==player1):
+			chance = player2
+		else:
+			chance = player1
+	[a,b] = check_win(board, plr1, plr2)
+	if(a==2):
+		print ("\033c")
+		display_board(board)
+		print ("It's a tie")
+	if(a==1):
+		print ("\033c")
+		display_board(board)
+		if(b == plr1):
+			print(player1 + " won!")
+		else:
+			print(player2 + " won!")
+
 if __name__ == "__main__":
-	board = ['-', '-', '-',
-			 '-', '-', '-',
-			 '-', '-', '-']
+	board =['-', '-', '-',
+		'-', '-', '-',
+		'-', '-', '-']
 	COUNT = 0
-	one_player(board)
+	print ("\033c")
+	c = input("Single player mode or Two player mode(s/t)? (s): ")
+	if c == '' or c == 's':
+		one_player(board)
+	else:
+		two_player(board)
 	#549946 iterarions minimax
 	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))

@@ -1,4 +1,21 @@
 # TicTacToe-AI-Tutorial
 
-Comaptible for python2 and python3
-For python2, 'sudo pip install future' to support input()
+Install the program from pip using:
+```
+pip install tic_tac_toe
+```
+
+To run a single player mode, type(the single player mode is by default):
+```
+tic_tac_toe --mode s
+```
+
+To run a two player mode, run:
+```
+tic_tac_toe --mode t
+```
+
+To get help, type:
+```
+tic_tac_toe --help
+```

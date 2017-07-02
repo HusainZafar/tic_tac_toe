@@ -1,7 +1,10 @@
 """
-Tic Tac Toe Minimax
-minimax value returned is from computer point of view. so to print from user point of view, prin opposite of what is received
-Add comments
+Tic Tac Toe
+Author: Husain Zafar
+Provides an elegant playing experience
+Uses Minimax algorithm
+Single and Two player modes
+Includes an option to display chances of winning per playable box, per move. 
 """
 import random
 import argparse

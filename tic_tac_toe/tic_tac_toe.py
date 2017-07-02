@@ -4,7 +4,27 @@ minimax value returned is from computer point of view. so to print from user poi
 Add comments
 """
 import random
+import argparse
+import sys
+import os
 from builtins import input
+
+def main(args=None):
+	board =['-', '-', '-',
+		'-', '-', '-',
+		'-', '-', '-']
+	COUNT = 0
+	parser = argparse.ArgumentParser(description=	'Play a game of Tic Tac Toe')
+	parser.add_argument('--mode', type=str, default = 's', choices = ['s', 't'], help = 'Mode of play: s(single) or t(two-player) (default: s)')	
+	args = parser.parse_args()
+	if args.mode == 's':
+		_ = os.system('clear')
+		one_player(board)
+	elif args.mode == 't':
+		_ = os.system('clear')
+		two_player(board)
+	#549946 iterarions minimax
+	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))
 
 def display_board(board):
 	"""
@@ -146,7 +166,7 @@ def one_player(board):
 
 	global COUNT
 	if order == 1:
-		print ("\033c")
+		_ = os.system('clear')
 		display_board(board)
 		while check_win(board, comp, plr)[0] == 0:
 			COUNT = 0
@@ -155,30 +175,30 @@ def one_player(board):
 			else:
 				tut = [-i for i in minimax(board, plr, comp, plr)]
 			if t == 1:
-				print ("\033c")
+				_ = os.system('clear')
 				display_tutorial_board(board, tut)
 			index = int(input())
 			if index > 9 or index < 1:
-				print ("\033c")
+				_ = os.system('clear')
 				display_board(board)
 				if t == 1:
-					print ("\033c")
+					_ = os.system('clear')
 					display_tutorial_board(board, tut)
 				continue
 			index = index_mapping[index]
 			# cant use already used index
 			if board[index] != '-':
-				print ("\033c")
+				_ = os.system('clear')
 				display_board(board)
 				if t == 1:
-					print ("\033c")
+					_ = os.system('clear')
 					display_tutorial_board(board, tut)
 				continue
 			board[index] = plr
-			print ("\033c")
+			_ = os.system('clear')
 			display_board(board)
 			if t == 1:
-				print ("\033c")
+				_ = os.system('clear')
 				display_tutorial_board(board, tut)
 			COUNT = 0
 			if check_win(board, comp, plr)[0] != 0:
@@ -186,7 +206,7 @@ def one_player(board):
 			ret = minimax(board, comp, comp, plr)
 			# chose move for computer
 			board[the_move(board, ret)] = comp
-			print ("\033c")
+			_ = os.system('clear')
 			display_board(board)
 		if check_win(board, comp, plr)[0] == 1:
 			print ("You lost!!")
@@ -202,7 +222,7 @@ def one_player(board):
 				ret = minimax(board, comp, comp, plr)
 				# chose move for computer
 				board[the_move(board, ret)] = comp
-			print ("\033c")
+			_ = os.system('clear')
 			display_board(board)
 			if check_win(board, comp, plr)[0] != 0:
 					break
@@ -211,33 +231,33 @@ def one_player(board):
 			while flag == 0:
 				COUNT = 0
 				tut = [-i for i in minimax(board, plr, comp, plr)]
-				print ("\033c")
+				_ = os.system('clear')
 				display_board(board)
 				if t == 1:
-					print ("\033c")
+					_ = os.system('clear')
 					display_tutorial_board(board, tut)
 				index = int(input())
 				if index > 9 or index < 1:
-					print ("\033c")
+					_ = os.system('clear')
 					display_board(board)
 					if t == 1:
-						print ("\033c")
+						_ = os.system('clear')
 						display_tutorial_board(board, tut)
 					continue
 				index = index_mapping[index]
 				if board[index] == '-':
 					flag = 1
 					board[index] = plr
-					print ("\033c")
+					_ = os.system('clear')
 					display_board(board)
 					if t == 1:
-						print ("\033c")
+						_ = os.system('clear')
 						display_tutorial_board(board, tut)
 				else:
-					print ("\033c")
+					_ = os.system('clear')
 					display_board(board)
 					if t == 1:
-						print ("\033c")
+						_ = os.system('clear')
 						display_tutorial_board(board, tut)
 
 		if check_win(board, comp, plr)[0] == 1:
@@ -274,12 +294,12 @@ def two_player(board):
 	else:
 		chance = player2	
 	while(check_win(board, plr1, plr2)[0] == 0):
-		print ("\033c")
+		_ = os.system('clear')
 		display_board(board)
 		print(chance + ": Your chance")
 		index = int(input())
 		if index > 9 or index < 1:
-			print ("\033c")
+			_ = os.system('clear')
 			continue		
 		index = index_mapping[index]
 		if(board[index] != '-'):
@@ -291,11 +311,11 @@ def two_player(board):
 			chance = player1
 	[a,b] = check_win(board, plr1, plr2)
 	if(a==2):
-		print ("\033c")
+		_ = os.system('clear')
 		display_board(board)
 		print ("It's a tie")
 	if(a==1):
-		print ("\033c")
+		_ = os.system('clear')
 		display_board(board)
 		if(b == plr1):
 			print(player1 + " won!")
@@ -303,15 +323,4 @@ def two_player(board):
 			print(player2 + " won!")
 
 if __name__ == "__main__":
-	board =['-', '-', '-',
-		'-', '-', '-',
-		'-', '-', '-']
-	COUNT = 0
-	print ("\033c")
-	c = input("Single player mode or Two player mode(s/t)? (s): ")
-	if c == '' or c == 's':
-		one_player(board)
-	else:
-		two_player(board)
-	#549946 iterarions minimax
-	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))
+	main()

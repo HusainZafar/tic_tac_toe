@@ -21,7 +21,7 @@ pip install tic_tac_toe
   ```
 
 ### Demo:
-https://www.youtube.com/watch?v=jl7qYpLRXPM
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/jl7qYpLRXPM/0.jpg)](https://www.youtube.com/watch?v=jl7qYpLRXPM "Video Title")
 
 ### Screenshots:
 

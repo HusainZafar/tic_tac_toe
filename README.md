@@ -20,6 +20,9 @@ pip install tic_tac_toe
   tic_tac_toe --help
   ```
 
+### Demo:
+https://www.youtube.com/watch?v=jl7qYpLRXPM
+
 ### Screenshots:
 
 ![N|Solid](screenshots/single.png)

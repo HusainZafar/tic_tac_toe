@@ -12,6 +12,12 @@ import sys
 import os
 from builtins import input
 
+def clearScreen():
+	"""
+	Clears terminal based on user's OS
+	"""
+	os.system('cls' if os.name=='nt' else 'clear')
+
 def main(args=None):
 	board =['-', '-', '-',
 		'-', '-', '-',
@@ -21,10 +27,10 @@ def main(args=None):
 	parser.add_argument('--mode', type=str, default = 's', choices = ['s', 't'], help = 'Mode of play: s(single) or t(two-player) (default: s)')	
 	args = parser.parse_args()
 	if args.mode == 's':
-		_ = os.system('clear')
+		clearScreen()
 		one_player(board)
 	elif args.mode == 't':
-		_ = os.system('clear')
+		clearScreen()
 		two_player(board)
 	#549946 iterarions minimax
 	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))
@@ -169,7 +175,7 @@ def one_player(board):
 
 	global COUNT
 	if order == 1:
-		_ = os.system('clear')
+		clearScreen()
 		display_board(board)
 		while check_win(board, comp, plr)[0] == 0:
 			COUNT = 0
@@ -178,30 +184,30 @@ def one_player(board):
 			else:
 				tut = [-i for i in minimax(board, plr, comp, plr)]
 			if t == 1:
-				_ = os.system('clear')
+				clearScreen()
 				display_tutorial_board(board, tut)
 			index = int(input())
 			if index > 9 or index < 1:
-				_ = os.system('clear')
+				clearScreen()
 				display_board(board)
 				if t == 1:
-					_ = os.system('clear')
+					clearScreen()
 					display_tutorial_board(board, tut)
 				continue
 			index = index_mapping[index]
 			# cant use already used index
 			if board[index] != '-':
-				_ = os.system('clear')
+				clearScreen()
 				display_board(board)
 				if t == 1:
-					_ = os.system('clear')
+					clearScreen()
 					display_tutorial_board(board, tut)
 				continue
 			board[index] = plr
-			_ = os.system('clear')
+			clearScreen()
 			display_board(board)
 			if t == 1:
-				_ = os.system('clear')
+				clearScreen()
 				display_tutorial_board(board, tut)
 			COUNT = 0
 			if check_win(board, comp, plr)[0] != 0:
@@ -209,7 +215,7 @@ def one_player(board):
 			ret = minimax(board, comp, comp, plr)
 			# chose move for computer
 			board[the_move(board, ret)] = comp
-			_ = os.system('clear')
+			clearScreen()
 			display_board(board)
 		if check_win(board, comp, plr)[0] == 1:
 			print ("You lost!!")
@@ -225,7 +231,7 @@ def one_player(board):
 				ret = minimax(board, comp, comp, plr)
 				# chose move for computer
 				board[the_move(board, ret)] = comp
-			_ = os.system('clear')
+			clearScreen()
 			display_board(board)
 			if check_win(board, comp, plr)[0] != 0:
 					break
@@ -234,33 +240,33 @@ def one_player(board):
 			while flag == 0:
 				COUNT = 0
 				tut = [-i for i in minimax(board, plr, comp, plr)]
-				_ = os.system('clear')
+				clearScreen()
 				display_board(board)
 				if t == 1:
-					_ = os.system('clear')
+					clearScreen()
 					display_tutorial_board(board, tut)
 				index = int(input())
 				if index > 9 or index < 1:
-					_ = os.system('clear')
+					clearScreen()
 					display_board(board)
 					if t == 1:
-						_ = os.system('clear')
+						clearScreen()
 						display_tutorial_board(board, tut)
 					continue
 				index = index_mapping[index]
 				if board[index] == '-':
 					flag = 1
 					board[index] = plr
-					_ = os.system('clear')
+					clearScreen()
 					display_board(board)
 					if t == 1:
-						_ = os.system('clear')
+						clearScreen()
 						display_tutorial_board(board, tut)
 				else:
-					_ = os.system('clear')
+					clearScreen()
 					display_board(board)
 					if t == 1:
-						_ = os.system('clear')
+						clearScreen()
 						display_tutorial_board(board, tut)
 
 		if check_win(board, comp, plr)[0] == 1:
@@ -297,12 +303,12 @@ def two_player(board):
 	else:
 		chance = player2	
 	while(check_win(board, plr1, plr2)[0] == 0):
-		_ = os.system('clear')
+		clearScreen()
 		display_board(board)
 		print(chance + ": Your chance")
 		index = int(input())
 		if index > 9 or index < 1:
-			_ = os.system('clear')
+			clearScreen()
 			continue		
 		index = index_mapping[index]
 		if(board[index] != '-'):
@@ -314,11 +320,11 @@ def two_player(board):
 			chance = player1
 	[a,b] = check_win(board, plr1, plr2)
 	if(a==2):
-		_ = os.system('clear')
+		clearScreen()
 		display_board(board)
 		print ("It's a tie")
 	if(a==1):
-		_ = os.system('clear')
+		clearScreen()
 		display_board(board)
 		if(b == plr1):
 			print(player1 + " won!")

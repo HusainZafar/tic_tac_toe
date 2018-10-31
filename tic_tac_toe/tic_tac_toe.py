@@ -9,6 +9,7 @@ Includes an option to display chances of winning per playable box, per move.
 import random
 import argparse
 import sys
+
 import os
 from builtins import input
 
@@ -164,7 +165,13 @@ def one_player(board):
 	Play with the computer
 	"""
 	index_mapping = {7:0,8:1,9:2,4:3,5:4,6:5,1:6,2:7,3:8}
-	order = int(input("first(1) or second(2) ?\n"))
+	while(1):
+		order = input("first(1) or second(2) ?\n")
+		if(order=='1' or order=='2'):
+			order = int(order)
+			break
+		else:
+			print("Please enter valid choice")
 	comp = input("Enter character for computer on board : ")
 	plr = input("Enter character for player on board   : ")
 	t = input("Display move winning chance? (y/Y)    : ")
@@ -186,7 +193,7 @@ def one_player(board):
 			if t == 1:
 				clearScreen()
 				display_tutorial_board(board, tut)
-			index = int(input())
+				index = int(input())
 			if index > 9 or index < 1:
 				clearScreen()
 				display_board(board)

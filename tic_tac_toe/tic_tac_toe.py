@@ -19,18 +19,15 @@ def clearScreen():
 	os.system('cls' if os.name=='nt' else 'clear')
 
 def main(args=None):
-	board =['-', '-', '-',
-		'-', '-', '-',
-		'-', '-', '-']
+	board =['-' for idx in range(9)]
 	COUNT = 0
 	parser = argparse.ArgumentParser(description=	'Play a game of Tic Tac Toe')
-	parser.add_argument('--mode', type=str, default = 's', choices = ['s', 't'], help = 'Mode of play: s(single) or t(two-player) (default: s)')	
+	parser.add_argument('--mode', type=str, default = 's', choices = ['s', 't'], help = 'Mode: s(single player):default, t(two-player)')	
 	args = parser.parse_args()
+	clearScreen()
 	if args.mode == 's':
-		clearScreen()
 		one_player(board)
 	elif args.mode == 't':
-		clearScreen()
 		two_player(board)
 	#549946 iterarions minimax
 	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))
@@ -53,14 +50,10 @@ def display_tutorial_board(board, tut):
 	"""
 	prob = board[::]
 	i = j = 0
+	scoreToResult = {1:'W', 0:'D', -1:'L'}
 	while j < len(board) :
 		if board[j] == '-':
-			if tut[i] == 1:
-				prob[j] = 'W'
-			if tut[i] == 0:
-				prob[j] = 'D'
-			if tut[i] ==-1:
-				prob[j] = 'L'
+			prob[j] = scoreToResult[tut[i]]
 			i += 1
 		else:
 			prob[j] = '-'
@@ -75,10 +68,7 @@ def display_tutorial_board(board, tut):
 	print ("")
 
 def check_empty(board):
-	for i in range(0,9):
-		if board[i] != '-':
-			return False
-	return True
+	return board.count('-') == 9
 	
 def check_win(board, player1, player2):
 	"""
@@ -102,9 +92,7 @@ def move_random(moves_list):
 	"""
 	returns random index of one of the many possible moves
 	"""
-	import random
-	random = random.randrange(0, len(moves_list))
-	return moves_list[random]
+	return random.choice(moves_list)
 
 def the_move(board, lst):
 	"""
@@ -173,7 +161,7 @@ def one_player(board):
 	comp = input("Enter character for computer on board : ")
 	plr = input("Enter character for player on board   : ")
 	t = input("Display move winning chance? (y/n)    : ")
-	if t == 'Y' or t == 'y':
+	if t in ['Y','y']:
 		t = 1
 	else:
 		t = 0
@@ -191,7 +179,7 @@ def one_player(board):
 			if t == 1:
 				clearScreen()
 				display_tutorial_board(board, tut)
-				index = int(input())
+			index = int(input())
 			if index > 9 or index < 1:
 				clearScreen()
 				display_board(board)

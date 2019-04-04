@@ -6,110 +6,27 @@ Uses Minimax algorithm
 Single and Two player modes
 Includes an option to display chances of winning per playable box, per move. 
 """
+
+import utils
 import random
 import argparse
-import sys
-import os
+import constants
 from builtins import input
 
-def clearScreen():
-	"""
-	Clears terminal based on user's OS
-	"""
-	os.system('cls' if os.name=='nt' else 'clear')
 
 def main(args=None):
-	board =['-' for idx in range(9)]
+	board = constants.board
 	COUNT = 0
 	parser = argparse.ArgumentParser(description=	'Play a game of Tic Tac Toe')
 	parser.add_argument('--mode', type=str, default = 's', choices = ['s', 't'], help = 'Mode: s(single player):default, t(two-player)')	
 	args = parser.parse_args()
-	clearScreen()
+	utils.clearScreen()
 	if args.mode == 's':
 		one_player(board)
 	elif args.mode == 't':
 		two_player(board)
 	#549946 iterarions minimax
 	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))
-
-def display_board(board):
-	"""
-	prints the current board
-	"""
-	print ("TIC TAC TOE			      Move Index\n")
-	print (" " + board[0] + " | " + board[1] + " | " + board[2] + "				 " + "7 8 9")
-	print ("---|---|---")
-	print (" " + board[3] + " | " + board[4] + " | " + board[5] + "				 " + "4 5 6")
-	print ("---|---|---")
-	print (" " + board[6] + " | " + board[7] + " | " + board[8] + "				 " + "1 2 3")
-	print ("")
-
-def display_tutorial_board(board, tut):
-	"""
-	prints the current board plus the feasibility of each move
-	"""
-	prob = board[::]
-	i = j = 0
-	scoreToResult = {1:'W', 0:'D', -1:'L'}
-	while j < len(board) :
-		if board[j] == '-':
-			prob[j] = scoreToResult[tut[i]]
-			i += 1
-		else:
-			prob[j] = '-'
-		j += 1
-
-	print ("TIC TAC TOE    		      Move Index		       Winning chance\n")
-	print (" " + board[0] + " | " + board[1] + " | " + board[2] + "			 " + "7 8 9" + "				 " + prob[0] + " " + prob[1] + " " + prob[2])
-	print ("---|---|---")
-	print (" " + board[3] + " | " + board[4] + " | " + board[5] + "			 " + "4 5 6" + "				 " + prob[3] + " " + prob[4] + " " + prob[5])
-	print ("---|---|---")
-	print (" " + board[6] + " | " + board[7] + " | " + board[8] + "			 " + "1 2 3" + "				 " + prob[6] + " " + prob[7] + " " + prob[8])
-	print ("")
-
-def check_empty(board):
-	return board.count('-') == 9
-	
-def check_win(board, player1, player2):
-	"""
-	returns status of current board: 1-> won, 2-> draw, 0-> game undecided
-	if game won, return value is [1,who_won]
-	"""
-	returned_val = ['', '']
-	if   board[0] == board[1] == board[2] and board[0] in [player1, player2]:	returned_val = [1, board[0]]
-	elif board[3] == board[4] == board[5] and board[3] in [player1, player2]:	returned_val = [1, board[3]]
-	elif board[6] == board[7] == board[8] and board[6] in [player1, player2]:	returned_val = [1, board[6]]
-	elif board[0] == board[3] == board[6] and board[0] in [player1, player2]:	returned_val = [1, board[0]]
-	elif board[1] == board[4] == board[7] and board[1] in [player1, player2]:	returned_val = [1, board[1]]
-	elif board[2] == board[5] == board[8] and board[2] in [player1, player2]:	returned_val = [1, board[2]]
-	elif board[0] == board[4] == board[8] and board[0] in [player1, player2]:	returned_val = [1, board[0]]
-	elif board[2] == board[4] == board[6] and board[2] in [player1, player2]:	returned_val = [1, board[2]]
-	elif '-' in board:	returned_val = [0, board[0]]
-	else:	returned_val = [2, board[0]]
-	return returned_val
-
-def move_random(moves_list):
-	"""
-	returns random index of one of the many possible moves
-	"""
-	return random.choice(moves_list)
-
-def the_move(board, lst):
-	"""
-	returns a random index out of the best moves
-	"""
-	max_val = max(lst)
-	max_array = []
-	for i in range(len(lst)):
-		if lst[i] == max_val:
-			max_array.append(i)
-	k = move_random(max_array)
-	cntr = 0
-	for i in range(9):
-		if board[i] == '-':
-			cntr += 1
-		if cntr == k+1:
-			return i
 
 def minimax(board, move, comp, plr):
 	"""
@@ -120,7 +37,7 @@ def minimax(board, move, comp, plr):
 	"""
 	global COUNT
 	COUNT += 1
-	[is_win, who_won] = check_win(board, comp, plr)
+	[is_win, who_won] = utils.check_win(board, comp, plr)
 	if is_win == 2:			   
 		return 0
 	if is_win == 1:
@@ -151,7 +68,7 @@ def one_player(board):
 	"""
 	Play with the computer
 	"""
-	index_mapping = {7:0,8:1,9:2,4:3,5:4,6:5,1:6,2:7,3:8}
+	keyboardIndexMapping = constants.keyboardIndexMapping
 	order = input("first(1) or second(2) ?(Default 1)\n")
 	if(order=='1' or order=='2'):
 		order = int(order)
@@ -168,101 +85,101 @@ def one_player(board):
 
 	global COUNT
 	if order == 1:
-		clearScreen()
-		display_board(board)
-		while check_win(board, comp, plr)[0] == 0:
+		utils.clearScreen()
+		utils.display_board(board)
+		while utils.check_win(board, comp, plr)[0] == 0:
 			COUNT = 0
-			if check_empty(board):
+			if utils.check_empty(board):
 				tut = [0,0,0,0,0,0,0,0,0]
 			else:
 				tut = [-i for i in minimax(board, plr, comp, plr)]
 			if t == 1:
-				clearScreen()
-				display_tutorial_board(board, tut)
+				utils.clearScreen()
+				utils.display_tutorial_board(board, tut)
 			index = int(input())
 			if index > 9 or index < 1:
-				clearScreen()
-				display_board(board)
+				utils.clearScreen()
+				utils.display_board(board)
 				if t == 1:
-					clearScreen()
-					display_tutorial_board(board, tut)
+					utils.clearScreen()
+					utils.display_tutorial_board(board, tut)
 				continue
-			index = index_mapping[index]
+			index = keyboardIndexMapping[index]
 			# cant use already used index
 			if board[index] != '-':
-				clearScreen()
-				display_board(board)
+				utils.clearScreen()
+				utils.display_board(board)
 				if t == 1:
-					clearScreen()
-					display_tutorial_board(board, tut)
+					utils.clearScreen()
+					utils.display_tutorial_board(board, tut)
 				continue
 			board[index] = plr
-			clearScreen()
-			display_board(board)
+			utils.clearScreen()
+			utils.display_board(board)
 			if t == 1:
-				clearScreen()
-				display_tutorial_board(board, tut)
+				utils.clearScreen()
+				utils.display_tutorial_board(board, tut)
 			COUNT = 0
-			if check_win(board, comp, plr)[0] != 0:
+			if utils.check_win(board, comp, plr)[0] != 0:
 				break
 			ret = minimax(board, comp, comp, plr)
 			# chose move for computer
-			board[the_move(board, ret)] = comp
-			clearScreen()
-			display_board(board)
-		if check_win(board, comp, plr)[0] == 1:
+			board[utils.the_move(board, ret)] = comp
+			utils.clearScreen()
+			utils.display_board(board)
+		if utils.check_win(board, comp, plr)[0] == 1:
 			print ("You lost!!")
 		else:
 			print ("It's a draw!")
 
 	if order == 2:
-		while check_win(board, comp, plr)[0] == 0:
+		while utils.check_win(board, comp, plr)[0] == 0:
 			COUNT = 0
-			if check_empty(board):
+			if utils.check_empty(board):
 				board[random.randrange(0,9)] = comp
 			else:
 				ret = minimax(board, comp, comp, plr)
 				# chose move for computer
-				board[the_move(board, ret)] = comp
-			clearScreen()
-			display_board(board)
-			if check_win(board, comp, plr)[0] != 0:
+				board[utils.the_move(board, ret)] = comp
+			utils.clearScreen()
+			utils.display_board(board)
+			if utils.check_win(board, comp, plr)[0] != 0:
 					break
 			# index already used can't be reused
 			flag = 0
 			while flag == 0:
 				COUNT = 0
 				tut = [-i for i in minimax(board, plr, comp, plr)]
-				clearScreen()
-				display_board(board)
+				utils.clearScreen()
+				utils.display_board(board)
 				if t == 1:
-					clearScreen()
-					display_tutorial_board(board, tut)
+					utils.clearScreen()
+					utils.display_tutorial_board(board, tut)
 				index = int(input())
 				if index > 9 or index < 1:
-					clearScreen()
-					display_board(board)
+					utils.clearScreen()
+					utils.display_board(board)
 					if t == 1:
-						clearScreen()
-						display_tutorial_board(board, tut)
+						utils.clearScreen()
+						utils.display_tutorial_board(board, tut)
 					continue
-				index = index_mapping[index]
+				index = keyboardIndexMapping[index]
 				if board[index] == '-':
 					flag = 1
 					board[index] = plr
-					clearScreen()
-					display_board(board)
+					utils.clearScreen()
+					utils.display_board(board)
 					if t == 1:
-						clearScreen()
-						display_tutorial_board(board, tut)
+						utils.clearScreen()
+						utils.display_tutorial_board(board, tut)
 				else:
-					clearScreen()
-					display_board(board)
+					utils.clearScreen()
+					utils.display_board(board)
 					if t == 1:
-						clearScreen()
-						display_tutorial_board(board, tut)
+						utils.clearScreen()
+						utils.display_tutorial_board(board, tut)
 
-		if check_win(board, comp, plr)[0] == 1:
+		if utils.check_win(board, comp, plr)[0] == 1:
 			print ("You lost!!")
 		else:
 			print ("It's a draw!")
@@ -271,7 +188,7 @@ def two_player(board):
 	'''
 	Play in 2 player mode
 	'''
-	index_mapping = {7:0,8:1,9:2,4:3,5:4,6:5,1:6,2:7,3:8}
+	keyboardIndexMapping = constants.keyboardIndexMapping
 	player1 = input("Player 1 name (Player 1): ")
 	player2 = input("Player 2 name (Player 2): ")
 	if player1 == '':
@@ -295,15 +212,15 @@ def two_player(board):
 		chance = player1
 	else:
 		chance = player2	
-	while(check_win(board, plr1, plr2)[0] == 0):
-		clearScreen()
-		display_board(board)
+	while(utils.check_win(board, plr1, plr2)[0] == 0):
+		utils.clearScreen()
+		utils.display_board(board)
 		print(chance + ": Your chance")
 		index = int(input())
 		if index > 9 or index < 1:
-			clearScreen()
+			utils.clearScreen()
 			continue		
-		index = index_mapping[index]
+		index = keyboardIndexMapping[index]
 		if(board[index] != '-'):
 			continue
 		board[index] = move_mapping[chance]
@@ -311,14 +228,14 @@ def two_player(board):
 			chance = player2
 		else:
 			chance = player1
-	[a,b] = check_win(board, plr1, plr2)
+	[a,b] = utils.check_win(board, plr1, plr2)
 	if(a==2):
-		clearScreen()
-		display_board(board)
+		utils.clearScreen()
+		utils.display_board(board)
 		print ("It's a tie")
 	if(a==1):
-		clearScreen()
-		display_board(board)
+		utils.clearScreen()
+		utils.display_board(board)
 		if(b == plr1):
 			print(player1 + " won!")
 		else:

@@ -85,3 +85,41 @@ def the_move(board, lst):
 			cntr += 1
 		if cntr == k+1:
 			return i
+
+def getSinglePlayerDetails():
+	whichPlayerFirst = input("first(1) or second(2) ?(Default 1)\n")
+	if(whichPlayerFirst=='1' or whichPlayerFirst=='2'):
+		whichPlayerFirst = int(whichPlayerFirst)
+	else:
+		print("Chosing default 1")
+		whichPlayerFirst = 1
+	computerChar = input("Enter character for computer on board : ")
+	playerChar = input("Enter character for player on board   : ")
+	displayWinChance = input("Display move winning chance? (y/n)    : ")
+	if displayWinChance in ['Y','y']:
+		displayWinChance = 1
+	else:
+		displayWinChance = 0
+	return computerChar, playerChar, displayWinChance, whichPlayerFirst
+
+def getTwoPlayerDetails():
+	playerOne = input("Player 1 name (Player 1): ")
+	playerTwo = input("Player 2 name (Player 2): ")
+	if playerOne == '':
+		playerOne = 'Player 1'
+	if playerTwo == '':
+		playerTwo = 'Player 2'
+
+	playerOneChar = input("Enter character for "+ playerOne + " on board (x): ")
+	if playerOneChar == '':
+		playerOneChar = 'x'
+	playerTwoChar = input("Enter character for "+ playerTwo + " on board (o): ")	
+	if playerTwoChar == '':
+		playerTwoChar = 'o'
+
+	whichPlayerFirst = input("Who goes first, " + playerOne + " or " + playerTwo + " (1/2)? (1): ")
+	if whichPlayerFirst == '':
+		whichPlayerFirst = 1
+	whichPlayerFirst = int(whichPlayerFirst)
+
+	return playerOne, playerTwo, playerOneChar, playerTwoChar, whichPlayerFirst

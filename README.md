@@ -1,9 +1,18 @@
 # TicTacToe-AI-Tutorial
 
-### Install the program from pip using:
+### Install from pip:
 ```
 pip install tic_tac_toe
 ```
+
+### Install locally for development:
+```
+git clone https://github.com/HusainZafar/tic_tac_toe.git
+cd tic_tac_toe
+pip install -e .
+```
+
+This installs the package in editable mode — any changes you make to the source code will take effect immediately without reinstalling.
 
 - To run a single player mode, type: (the single player mode is by default)
   ```

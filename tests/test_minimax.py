@@ -1,8 +1,10 @@
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from tic_tac_toe.tic_tac_toe import tic_tac_toe
+
 try:
     from unittest.mock import patch
 except ImportError:

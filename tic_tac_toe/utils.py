@@ -1,6 +1,7 @@
 import os
 import random
 
+
 def get_move_input():
 	"""
 	Prompts user for a move and validates that input is a digit between 1 and 9.
@@ -57,7 +58,7 @@ def display_tutorial_board(board, tut):
 
 def check_empty(board):
 	return board.count('-') == 9
-	
+
 def check_win(board, player1, player2):
 	"""
 	returns status of current board: 1-> won, 2-> draw, 0-> game undecided
@@ -126,7 +127,7 @@ def getTwoPlayerDetails():
 	playerOneChar = input("Enter character for "+ playerOne + " on board (x): ")
 	if playerOneChar == '':
 		playerOneChar = 'x'
-	playerTwoChar = input("Enter character for "+ playerTwo + " on board (o): ")	
+	playerTwoChar = input("Enter character for "+ playerTwo + " on board (o): ")
 	if playerTwoChar == '':
 		playerTwoChar = 'o'
 

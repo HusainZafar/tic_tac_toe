@@ -4,22 +4,24 @@ Author: Husain Zafar
 Provides an elegant playing experience
 Uses Minimax algorithm
 Single and Two player modes
-Includes an option to display chances of winning per playable box, per move. 
+Includes an option to display chances of winning per playable box, per move.
 """
 
-from . import utils
-from . import constants
-import random
 import argparse
-from builtins import input
+import random
+
+from . import constants, utils
 
 
 def main(args=None):
 	parser = argparse.ArgumentParser(description=	'Play a game of Tic Tac Toe')
-	parser.add_argument('--mode', type=str, default = 's', choices = ['s', 't'], help = 'Mode: s(single player):default, t(two-player)')	
+	parser.add_argument(
+		'--mode', type=str, default='s', choices=['s', 't'],
+		help='Mode: s(single player):default, t(two-player)'
+	)
 	mode = parser.parse_args().mode
 	utils.clearScreen()
-	game = tic_tac_toe(mode)
+	tic_tac_toe(mode)
 	#549946 iterarions minimax
 	#upper limit 1+9*(1+8*(...(1+2*(1+1)...))
 
@@ -39,7 +41,7 @@ class tic_tac_toe:
 		the maximum value from the array is chosen else, the minimum value.
 		"""
 		[is_win, who_won] = utils.check_win(board, computerChar, playerChar)
-		if is_win == 2:			   
+		if is_win == 2:
 			return 0
 		if is_win == 1:
 			if who_won == computerChar:
@@ -70,7 +72,7 @@ class tic_tac_toe:
 		"""
 		keyboardIndexMapping = constants.keyboardIndexMapping
 		computerChar, playerChar, displayWinChance, whichPlayerFirst = utils.getSinglePlayerDetails()
-	
+
 		if whichPlayerFirst == 1:
 			utils.clearScreen()
 			utils.display_board(board)
@@ -116,7 +118,7 @@ class tic_tac_toe:
 				print ("You lost!!")
 			else:
 				print ("It's a draw!")
-	
+
 		if whichPlayerFirst == 2:
 			while utils.check_win(board, computerChar, playerChar)[0] == 0:
 				if utils.check_empty(board):
@@ -161,7 +163,7 @@ class tic_tac_toe:
 						if displayWinChance == 1:
 							utils.clearScreen()
 							utils.display_tutorial_board(board, tut)
-	
+
 			if utils.check_win(board, computerChar, playerChar)[0] == 1:
 				print ("You lost!!")
 			else:
@@ -179,7 +181,7 @@ class tic_tac_toe:
 			chance = playerOne
 		else:
 			chance = playerTwo
-	
+
 		while(utils.check_win(board, playerOneChar, playerTwoChar)[0] == 0):
 			utils.clearScreen()
 			utils.display_board(board)
@@ -187,7 +189,7 @@ class tic_tac_toe:
 			index = utils.get_move_input()
 			if index is None or index > 9 or index < 1:
 				utils.clearScreen()
-				continue		
+				continue
 			index = keyboardIndexMapping[index]
 			if(board[index] != '-'):
 				continue
@@ -208,6 +210,6 @@ class tic_tac_toe:
 				print(playerOne + " won!")
 			else:
 				print(playerTwo + " won!")
-	
+
 if __name__ == "__main__":
 	main()

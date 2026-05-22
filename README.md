@@ -14,6 +14,18 @@ pip install -e .
 
 This installs the package in editable mode — any changes you make to the source code will take effect immediately without reinstalling.
 
+### Run tests:
+```
+pip install pytest
+pytest tests/ -v
+```
+
+### Run linter:
+```
+pip install ruff
+ruff check .
+```
+
 - To run a single player mode, type: (the single player mode is by default)
   ```
   tic_tac_toe --mode s

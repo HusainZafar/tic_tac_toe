@@ -7,10 +7,10 @@ Single and Two player modes
 Includes an option to display chances of winning per playable box, per move. 
 """
 
-import utils
+from . import utils
+from . import constants
 import random
 import argparse
-import constants
 from builtins import input
 
 
@@ -82,8 +82,8 @@ class tic_tac_toe:
 				if displayWinChance == 1:
 					utils.clearScreen()
 					utils.display_tutorial_board(board, tut)
-				index = int(input())
-				if index > 9 or index < 1:
+				index = utils.get_move_input()
+				if index is None or index > 9 or index < 1:
 					utils.clearScreen()
 					utils.display_board(board)
 					if displayWinChance == 1:
@@ -138,8 +138,8 @@ class tic_tac_toe:
 					if displayWinChance == 1:
 						utils.clearScreen()
 						utils.display_tutorial_board(board, tut)
-					index = int(input())
-					if index > 9 or index < 1:
+					index = utils.get_move_input()
+					if index is None or index > 9 or index < 1:
 						utils.clearScreen()
 						utils.display_board(board)
 						if displayWinChance == 1:
@@ -184,8 +184,8 @@ class tic_tac_toe:
 			utils.clearScreen()
 			utils.display_board(board)
 			print(chance + ": Your chance")
-			index = int(input())
-			if index > 9 or index < 1:
+			index = utils.get_move_input()
+			if index is None or index > 9 or index < 1:
 				utils.clearScreen()
 				continue		
 			index = keyboardIndexMapping[index]

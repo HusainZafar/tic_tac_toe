@@ -1,6 +1,19 @@
 import os
 import random
 
+def get_move_input():
+	"""
+	Prompts user for a move and validates that input is a digit between 1 and 9.
+	Returns the integer value, or None if input is invalid.
+	"""
+	raw = input()
+	if not raw.strip().isdigit():
+		return None
+	value = int(raw.strip())
+	if value < 1 or value > 9:
+		return None
+	return value
+
 def clearScreen():
 	"""
 	Clears terminal based on user's OS
